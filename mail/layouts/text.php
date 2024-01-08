@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var View $this view component instance
  * @var BaseMessage $message the message being composed
