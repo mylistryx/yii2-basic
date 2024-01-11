@@ -3,21 +3,39 @@
 namespace app\controllers;
 
 use app\components\controllers\WebController;
+use app\forms\ChangePasswordForm;
 use app\forms\RequestPasswordResetForm;
 use app\forms\ResetPassword;
-use app\models\ChangePasswordForm;
+use yii\filters\AccessControl;
 use yii\web\Response;
 
 final class PasswordController extends WebController
 {
-    public function actionRequest(): Response
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['change'],
+                'rules' => [
+                    [
+                        'actions' => ['change'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function actionRequestReset(): Response
     {
         $model = new RequestPasswordResetForm();
         if ($model->load($this->post()) && $model->sendRequest()) {
             return $this->info('Follow email instructions', 'app')->goHome();
         }
 
-        return $this->render('index', [
+        return $this->render('requestReset', [
             'model' => $model,
         ]);
     }

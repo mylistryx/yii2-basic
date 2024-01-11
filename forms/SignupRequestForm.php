@@ -19,7 +19,7 @@ class SignupRequestForm extends Model
         return [
             [['email', 'password'], 'required'],
             ['email', 'email'],
-            ['password', 'string', 'length' => [Yii::$app->params['identity.password.minLength']]],
+            ['password', 'string', 'length' => [Yii::$app->params['identity.passwordMinLength']]],
             [
                 'email',
                 'unique',

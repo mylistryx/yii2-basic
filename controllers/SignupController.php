@@ -20,7 +20,7 @@ final class SignupController extends WebController
     /**
      * @throws Exception
      */
-    public function actionIndex(): Response
+    public function actionRequest(): Response
     {
         $model = new SignupRequestForm();
 
@@ -28,7 +28,7 @@ final class SignupController extends WebController
             return $this->success('Follow email instructions', 'app')->goHome();
         }
 
-        return $this->render('signupRequest', [
+        return $this->render('request', [
             'model' => $model,
         ]);
     }

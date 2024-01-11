@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\forms;
 
 use Yii;
 use yii\base\Model;
@@ -24,7 +24,7 @@ class ChangePasswordForm extends Model
                     Yii::$app->params['identity.passwordMaxLength'],
                 ],
             ],
-            ['newPassword', 'compare', 'compareAttribute', 'newPasswordRepeat'],
+            ['newPassword', 'compare', 'compareAttribute' => 'newPasswordRepeat'],
         ];
     }
 
@@ -42,7 +42,7 @@ class ChangePasswordForm extends Model
     public function attributeLabels(): array
     {
         return [
-            'password' => Yii::t('app', 'password'),
+            'password' => Yii::t('app', 'Password'),
             'newPassword' => Yii::t('app', 'New password'),
             'newPasswordRepeat' => Yii::t('app', 'New password repeat'),
         ];
