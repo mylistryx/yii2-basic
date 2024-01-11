@@ -2,8 +2,19 @@
 
 namespace app\traits;
 
+use Yii;
+use yii\base\Exception;
+
 trait IdentityTrait
 {
+    /**
+     * @throws Exception
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
     public static function findIdentity($id): ?static
     {
         return static::findOne(['id' => $id]);
@@ -27,5 +38,10 @@ trait IdentityTrait
     public function validateAuthKey($authKey): bool
     {
         return $this->auth_key === $authKey;
+    }
+
+    public function validatePassword(?string $password): bool
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 }

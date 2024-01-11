@@ -2,30 +2,39 @@
 
 namespace app\forms;
 
+use app\enum\IdentityStatus;
+use app\enum\IdentityTokenType;
+use app\models\IdentityToken;
+use Throwable;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\Model;
+use yii\base\UserException;
+use yii\db\StaleObjectException;
 
 class SignupCompleteForm extends Model
 {
-    public ?string $confirmationToken = null;
+    private ?IdentityToken $identityToken = null;
 
-    public function rules(): array
+    public function __construct($token, array $config = [])
     {
-        return [
-            ['confirmationToken', 'required'],
-            ['confirmationToken', 'validateConfirmationToken'],
-        ];
+        $this->identityToken = IdentityToken::findByToken($token, IdentityTokenType::Confirmation);
+        if ($this->identityToken || $this->identityToken->isExpired) {
+            throw new InvalidArgumentException(Yii::t('app', 'Invalid confirmation token'));
+        }
+
+        parent::__construct($config);
     }
 
-    public function attributeLabels(): array
+    /**
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public function verifyEmail(): bool
     {
-        return [
-            'confirmationToken' => Yii::t('app', 'Confirmation token'),
-        ];
-    }
-
-    public function validateConfirmationToken(string $attribute): void
-    {
-
+        $identity = $this->identityToken->identity;
+        $identity->setStatus(IdentityStatus::Active);
+        $this->identityToken->delete();
+        return true;
     }
 }

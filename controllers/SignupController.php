@@ -3,7 +3,11 @@
 namespace app\controllers;
 
 use app\components\controllers\WebController;
+use app\forms\SignupCompleteForm;
 use app\forms\SignupRequestForm;
+use Throwable;
+use yii\base\Exception;
+use yii\db\StaleObjectException;
 use yii\web\Response;
 
 final class SignupController extends WebController
@@ -13,12 +17,15 @@ final class SignupController extends WebController
         return [];
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionIndex(): Response
     {
         $model = new SignupRequestForm();
 
         if ($model->load($this->post()) && $model->sendRequest()) {
-            return $this->success('Follow email instructions', 'app')->redirect('confirm');
+            return $this->success('Follow email instructions', 'app')->goHome();
         }
 
         return $this->render('signupRequest', [
@@ -26,8 +33,16 @@ final class SignupController extends WebController
         ]);
     }
 
-    public function actionConfirm(): Response
+    /**
+     * @throws StaleObjectException
+     * @throws Throwable
+     */
+    public function actionConfirm(string $token): Response
     {
-
+        $model = new SignupCompleteForm($token);
+        if ($model->verifyEmail()) {
+            $this->success('Email confirmed', 'app');
+        }
+        return $this->goHome();
     }
 }
