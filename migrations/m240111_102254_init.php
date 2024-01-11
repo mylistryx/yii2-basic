@@ -8,8 +8,6 @@ use yii\db\Migration;
  */
 class m240111_102254_init extends Migration
 {
-    public string $tableName = '{{%identity}}';
-
     /**
      * {@inheritdoc}
      */

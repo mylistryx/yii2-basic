@@ -16,7 +16,7 @@ class m240111_103727_identity_token extends Migration
         $this->createTable(Table::IdentityToken->value, [
             'id' => $this->primaryKey(),
             'identity_id' => $this->integer()->notNull(),
-            'value' => $this->string()->notNull()->unique(),
+            'token' => $this->string()->notNull()->unique(),
             'type' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->notNull(),

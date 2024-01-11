@@ -6,6 +6,7 @@ use app\components\controllers\WebController;
 use app\forms\ChangePasswordForm;
 use app\forms\RequestPasswordResetForm;
 use app\forms\ResetPassword;
+use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\web\Response;
 
@@ -28,6 +29,9 @@ final class PasswordController extends WebController
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionRequestReset(): Response
     {
         $model = new RequestPasswordResetForm();
