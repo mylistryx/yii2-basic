@@ -33,10 +33,10 @@ class UserController extends Controller
         if (!$identity->save()) {
             $this->stderr(PHP_EOL . 'Validation error!' . PHP_EOL);
             $this->stderr(Console::errorSummary($identity), BaseConsole::BG_RED);
-        } else {
-            $this->stdout(PHP_EOL . 'User created! ID: ' . $identity->id . PHP_EOL);
+            return ExitCode::UNSPECIFIED_ERROR;
         }
 
+        $this->stdout(PHP_EOL . 'User created! ID: ' . $identity->id . PHP_EOL);
         return ExitCode::OK;
     }
 }
