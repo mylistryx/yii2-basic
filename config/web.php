@@ -1,5 +1,8 @@
 <?php
 
+use app\components\WebUser;
+use yii\debug\Module as DebugModule;
+use yii\gii\Module as GiiModule;
 use app\models\Identity;
 use yii\caching\FileCache;
 use yii\log\FileTarget;
@@ -14,7 +17,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -25,6 +28,7 @@ $config = [
             'class' => FileCache::class
         ],
         'user' => [
+            'class' => WebUser::class,
             'identityClass' => Identity::class,
             'enableAutoLogin' => true,
         ],
@@ -59,14 +63,14 @@ $config = [
 if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'class' => DebugModule::class,
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'class' => GiiModule::class,
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

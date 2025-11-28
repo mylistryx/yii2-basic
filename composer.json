@@ -12,7 +12,8 @@
         "yiisoft/yii2-bootstrap5": "~2.0.50",
         "yiisoft/yii2-queue": "~2.3.7",
         "yiisoft/yii2-redis": "~2.0.20",
-        "yiisoft/yii2-symfonymailer": "~2.0.4"
+        "yiisoft/yii2-symfonymailer": "~2.0.4",
+        "ramsey/uuid": ">=4.9.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": ">=2.1.0",
