@@ -10,11 +10,7 @@ class Form extends Model
 {
     public static function getTCategory(): string
     {
-        return 'app';
-
-        $reflection = new ReflectionClass(static::class);
-
-        return $reflection->getShortName();
+        return new ReflectionClass(static::class)->getShortName();
     }
 
     public static function t(string $attribute, array $params = []): string

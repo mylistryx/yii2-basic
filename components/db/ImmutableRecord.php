@@ -31,7 +31,7 @@ abstract class ImmutableRecord extends Record
         throw new RuntimeException('Not implemented');
     }
 
-    public function delete($runValidation = true, $attributeNames = null): bool
+    public function delete($runValidation = true, $attributeNames = null): false|int
     {
         throw new RuntimeException('Not implemented');
     }

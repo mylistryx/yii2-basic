@@ -2,11 +2,11 @@
 
 namespace app\enums;
 
-use app\traits\Enum2Array;
+use app\traits\EnumToArrayTrait;
 
 enum Tables: string
 {
-    use Enum2Array;
+    use EnumToArrayTrait;
 
     case Identity = 'identity';
     case IdentityToken = 'identity_token';

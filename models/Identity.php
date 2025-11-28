@@ -2,103 +2,102 @@
 
 namespace app\models;
 
-class Identity extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use app\behaviors\UuidBehavior;
+use app\components\db\Record;
+use app\enums\IdentityStatus;
+use app\enums\Tables;
+use app\traits\IdentityInterfaceTrait;
+use Yii;
+use yii\base\Exception;
+use yii\web\IdentityInterface;
+
+/**
+ * @property string $id
+ * @property string $email
+ * @property int $current_status
+ * @property string $auth_key
+ * @property string $password_hash
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ ***** Magic *****
+ * @see self::getStatus()
+ * @see self::setStatus()
+ * @property IdentityStatus $status
+ *
+ * @see self::setPassword()
+ * @property-write string $password
+ ***** Relations *****
+ * @see self::getIdentityTokens()
+ * @property-read IdentityToken[]|array $identityTokens
+ */
+class Identity extends Record implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    use IdentityInterfaceTrait;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentity($id)
+    public static function tableName(): string
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return Tables::Identity->value;
+    }
+
+    public function behaviors(): array
+    {
+        return array_merge(parent::behaviors(), [
+            'Uuid' => [
+                'class' => UuidBehavior::class,
+            ],
+        ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            ['auth_key','required'],
+            ['auth_key', 'string', 'max' => 32],
+            ['current_status', 'required'],
+            ['current_status', 'in', 'range' => IdentityStatus::values()],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
+        ];
+    }
+
+    public static function find(): IdentityQuery
+    {
+        return new IdentityQuery(static::class);
+    }
+
+    public function getStatus(): IdentityStatus
+    {
+        return IdentityStatus::tryFrom($this->current_status);
+    }
+
+    public function setStatus(IdentityStatus $status): void
+    {
+        $this->current_status = $status->value;
     }
 
     /**
-     * {@inheritdoc}
+     * @throws Exception
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function setPassword(string $password): void
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function validatePassword(string $password): bool
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    /** Relations */
+
+    public function getIdentityTokens(?int $type = null): array
+    {
+        $query = $this->hasMany(IdentityTokenQuery::class, ['identity_id' => $this->id]);
+        if ($type !== null) {
+            $query->andWhere(['type' => $type]);
         }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+        return $query->all();
     }
 }

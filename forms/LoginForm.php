@@ -52,7 +52,7 @@ class LoginForm extends Model
     public function getUser(): ?Identity
     {
         if ($this->_user === false) {
-            $this->_user = Identity::findByUsername($this->username);
+            $this->_user = Identity::findByEmail($this->email);
         }
 
         return $this->_user;

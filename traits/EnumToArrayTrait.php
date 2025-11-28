@@ -4,7 +4,7 @@ namespace app\traits;
 
 use Yii;
 
-trait Enum2Array
+trait EnumToArrayTrait
 {
     public static function getLabel(mixed $field): string
     {
