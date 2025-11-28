@@ -24,8 +24,7 @@ class UserController extends Controller
             'auth_key' => Yii::$app->security->generateRandomString(),
         ]);
 
-        $status = Console::input('Status (A)ctive, (I)nactive, (D)eleted: ');
-        $identity->current_status = match ($status) {
+        $identity->current_status = match (Console::input('Status (A)ctive, (I)nactive, (D)eleted: ')) {
             'A', 'a' => IdentityStatus::Active->value,
             'I', 'i' => IdentityStatus::Inactive->value,
             'D', 'd' => IdentityStatus::Deleted->value,
