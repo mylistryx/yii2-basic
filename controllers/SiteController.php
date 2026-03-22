@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use app\components\WebController;
-use forms\ContactForm;
-use forms\LoginForm;
+use app\forms\ContactForm;
+use app\forms\LoginForm;
 use Yii;
 use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;

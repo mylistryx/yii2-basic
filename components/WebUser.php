@@ -10,5 +10,5 @@ use yii\web\User;
  */
 class WebUser extends User
 {
-
+    public $identityClass = Identity::class;
 }

@@ -4,18 +4,18 @@ use yii\debug\Module as DebugModule;
 use yii\gii\Module as GiiModule;
 
 return [
-    'bootstrap' => ['debug','gii'],
+    'bootstrap' => ['debug', 'gii'],
     'components' => [
         'request'      => [
             'cookieValidationKey' => '',
         ],
     ],
-    'modules' => [
+    'modules'   => [
         'debug' => [
             'class' => DebugModule::class,
         ],
-        'gii' => [
+        'gii'   => [
             'class' => GiiModule::class,
-        ]
-    ]
+        ],
+    ],
 ];

@@ -1,34 +1,34 @@
 <?php
 
+use app\models\Identity;
+
 class LoginFormCest
 {
-    public function _before(\FunctionalTester $I)
+    public function _before(FunctionalTester $I): void
     {
         $I->amOnRoute('site/login');
     }
 
-    public function openLoginPage(\FunctionalTester $I)
+    public function openLoginPage(FunctionalTester $I): void
     {
         $I->see('Login', 'h1');
     }
 
-    // demonstrates `amLoggedInAs` method
-    public function internalLoginById(\FunctionalTester $I)
+    public function internalLoginById(FunctionalTester $I): void
     {
         $I->amLoggedInAs(100);
         $I->amOnPage('/');
         $I->see('Logout (admin)');
     }
 
-    // demonstrates `amLoggedInAs` method
-    public function internalLoginByInstance(\FunctionalTester $I)
+    public function internalLoginByInstance(FunctionalTester $I): void
     {
-        $I->amLoggedInAs(\app\models\Identity::findByUsername('admin'));
+        $I->amLoggedInAs(Identity::findByUsername('admin'));
         $I->amOnPage('/');
         $I->see('Logout (admin)');
     }
 
-    public function loginWithEmptyCredentials(\FunctionalTester $I)
+    public function loginWithEmptyCredentials(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', []);
         $I->expectTo('see validations errors');
@@ -36,7 +36,7 @@ class LoginFormCest
         $I->see('Password cannot be blank.');
     }
 
-    public function loginWithWrongCredentials(\FunctionalTester $I)
+    public function loginWithWrongCredentials(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', [
             'LoginForm[username]' => 'admin',
@@ -46,7 +46,7 @@ class LoginFormCest
         $I->see('Incorrect username or password.');
     }
 
-    public function loginSuccessfully(\FunctionalTester $I)
+    public function loginSuccessfully(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', [
             'LoginForm[username]' => 'admin',
