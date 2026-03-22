@@ -1,12 +1,15 @@
 <?php
 
-/** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
+/**
+ * @var View $this
+ * @var ActiveForm $form
+ * @var LoginForm $model
+ */
 
-/** @var app\models\LoginForm $model */
-
+use app\forms\LoginForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
+use yii\web\View;
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
@@ -20,9 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
 
             <?php $form = ActiveForm::begin([
-                'id' => 'login-form',
+                'id'          => 'login-form',
                 'fieldConfig' => [
-                    'template' => "{label}\n{input}\n{error}",
+                    'template'     => "{label}\n{input}\n{error}",
                     'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
                     'inputOptions' => ['class' => 'col-lg-3 form-control'],
                     'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
