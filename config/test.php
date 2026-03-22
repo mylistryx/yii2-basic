@@ -1,47 +1,43 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/test_db.php';
+use app\models\Identity;
+use yii\helpers\ArrayHelper;
+use yii\symfonymailer\Mailer;
+use yii\symfonymailer\Message;
 
-/**
- * Application configuration shared by all test types
- */
+$params = ArrayHelper::merge(
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php',
+);
+
 return [
-    'id' => 'basic-tests',
-    'basePath' => dirname(__DIR__),
-    'aliases' => [
+    'id'         => 'app-test',
+    'basePath'   => dirname(__DIR__),
+    'aliases'    => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'language' => 'en-US',
+    'language'   => 'en-US',
     'components' => [
-        'db' => $db,
-        'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
-            'viewPath' => '@app/mail',
-            // send all mails to a file by default.
+        'mailer'       => [
+            'class'            => Mailer::class,
+            'viewPath'         => '@app/mail',
             'useFileTransport' => true,
-            'messageClass' => 'yii\symfonymailer\Message'
+            'messageClass'     => Message::class,
         ],
         'assetManager' => [
-            'basePath' => __DIR__ . '/../web/assets',
+            'basePath' => dirname(__DIR__) . '/web/assets',
         ],
-        'urlManager' => [
+        'urlManager'   => [
             'showScriptName' => true,
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
+        'user'         => [
+            'identityClass' => Identity::class,
         ],
-        'request' => [
-            'cookieValidationKey' => 'test',
+        'request'      => [
+            'cookieValidationKey'  => 'test',
             'enableCsrfValidation' => false,
-            // but if you absolutely need it set cookie domain to localhost
-            /*
-            'csrfCookie' => [
-                'domain' => 'localhost',
-            ],
-            */
         ],
     ],
-    'params' => $params,
+    'params'     => $params,
 ];
