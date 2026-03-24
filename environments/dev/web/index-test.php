@@ -1,8 +1,8 @@
 <?php
 
 // NOTE: Make sure this file is not accessible when deployed to production
-use common\components\applications\FrontendApplication;
 use yii\helpers\ArrayHelper;
+use yii\web\Application;
 
 if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     die('You are not allowed to access this file.');
@@ -28,4 +28,4 @@ $config = ArrayHelper::merge(
     require dirname(__DIR__) . '/config/test-local.php',
 );
 
-new FrontendApplication($config)->run();
+new Application($config)->run();

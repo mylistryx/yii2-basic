@@ -21,10 +21,6 @@ return [
         'urlManager'   => [
             'showScriptName' => true,
         ],
-        'request'      => [
-            'cookieValidationKey'  => 'test',
-            'enableCsrfValidation' => false,
-        ],
     ],
     'params'     => $params,
 ];

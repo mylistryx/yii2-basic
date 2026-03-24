@@ -42,7 +42,6 @@ return [
         ],
         'setCookieValidationKey' => [
             'config/web-local.php',
-            'config/codeception-local.php',
         ],
     ],
     'Production'  => [

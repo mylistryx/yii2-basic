@@ -2,7 +2,7 @@
 
 namespace tests\unit\models;
 
-use app\forms\LoginForm;
+use app\forms\Auth\LoginForm;
 use Codeception\Test\Unit;
 use Yii;
 

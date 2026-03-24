@@ -4,7 +4,7 @@
  * Yii console bootstrap file.
  */
 
-use common\components\applications\ConsoleApplication;
+use yii\console\Application;
 
 defined('YII_DEBUG') or define('YII_DEBUG', false);
 defined('YII_ENV') or define('YII_ENV', 'prod');
@@ -21,6 +21,6 @@ $config = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/console/config/main-local.php'
 );
 
-$application = new ConsoleApplication($config);
+$application = new Application($config);
 $exitCode = $application->run();
 exit($exitCode);

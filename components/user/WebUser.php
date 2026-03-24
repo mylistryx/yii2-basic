@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components;
+namespace app\components\user;
 
 use app\models\Identity;
 use yii\web\User;

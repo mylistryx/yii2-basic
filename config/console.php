@@ -1,5 +1,6 @@
 <?php
 
+use yii\console\controllers\MigrateController;
 use yii\faker\FixtureController;
 
 return [
@@ -9,6 +10,10 @@ return [
     'controllerMap'       => [
         'fixture' => [
             'class' => FixtureController::class,
+        ],
+        'migrate' => [
+            'class'        => MigrateController::class,
+            'templateFile' => '@app/components/migrations/views/migration.php',
         ],
     ],
 ];

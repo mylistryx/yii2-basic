@@ -1,14 +1,14 @@
 <?php
-
-use yii\helpers\Html;
-use yii\mail\MessageInterface;
-use yii\web\View;
-
 /**
  * @var View $this
  * @var MessageInterface $message
  * @var string $content
  */
+
+use yii\helpers\Html;
+use yii\mail\MessageInterface;
+use yii\web\View;
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

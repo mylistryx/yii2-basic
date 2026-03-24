@@ -1,6 +1,6 @@
 <?php
 
-use app\components\WebUser;
+use app\components\user\WebUser;
 use yii\log\FileTarget;
 use yii\redis\Cache;
 

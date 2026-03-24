@@ -2,7 +2,7 @@
 
 namespace app\forms;
 
-use app\components\Form;
+use app\components\forms\Form;
 use Yii;
 
 class ContactForm extends Form

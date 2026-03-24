@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
-use app\components\WebController;
+use app\components\controllers\WebController;
+use app\forms\Auth\LoginForm;
 use app\forms\ContactForm;
-use app\forms\LoginForm;
 use Yii;
 use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
