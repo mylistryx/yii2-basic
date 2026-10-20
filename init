@@ -7,8 +7,10 @@
  *
  * init --env=Development --overwrite=n
  */
+require_once 'vendor/autoload.php';
 
 use yii\helpers\Console;
+use yii\helpers\FileHelper;
 
 if (!extension_loaded('openssl')) {
     die('The OpenSSL PHP extension is required by Yii2.');
@@ -19,19 +21,19 @@ $root = str_replace('\\', '/', __DIR__);
 $envs = require "$root/environments/index.php";
 $envNames = array_keys($envs);
 
-Console::stdout("Yii Application Initialization Tool v1.0" . PHP_EOL . PHP_EOL);
+printMessage("Yii Application Initialization Tool v1.0" . PHP_EOL . PHP_EOL);
 
 $envName = null;
 if (empty($params['env']) || $params['env'] === true) {
-    Console::stdout("Which environment do you want the application to be initialized in?" . PHP_EOL . PHP_EOL);
+    printMessage("Which environment do you want the application to be initialized in?" . PHP_EOL . PHP_EOL);
     foreach ($envNames as $i => $name) {
-        Console::stdout("  [$i] $name" . PHP_EOL);
+        printMessage("  [$i] $name" . PHP_EOL);
     }
-    Console::stdout(PHP_EOL . "  Your choice [0-" . (count($envs) - 1) . ', or "q" to quit] ');
+    printMessage(PHP_EOL . "  Your choice [0-" . (count($envs) - 1) . ', or "q" to quit] ');
     $answer = trim(fgets(STDIN));
 
     if (!ctype_digit($answer) || !in_array($answer, range(0, count($envs) - 1))) {
-        Console::stdout(PHP_EOL . "  Quit initialization." . PHP_EOL);
+        printMessage(PHP_EOL . "  Quit initialization." . PHP_EOL);
         exit(0);
     }
 
@@ -44,17 +46,17 @@ if (empty($params['env']) || $params['env'] === true) {
 
 if (!in_array($envName, $envNames, true)) {
     $envsList = implode(', ', $envNames);
-    Console::stdout(PHP_EOL . "  $envName is not a valid environment. Try one of the following: $envsList. " . PHP_EOL);
+    printMessage(PHP_EOL . "  $envName is not a valid environment. Try one of the following: $envsList. " . PHP_EOL);
     exit(2);
 }
 
 $env = $envs[$envName];
 
 if (empty($params['env'])) {
-    Console::stdout(PHP_EOL . "  Initialize the application under '{$envNames[$answer]}' environment? [yes|no] ");
+    printMessage(PHP_EOL . "  Initialize the application under '{$envNames[$answer]}' environment? [yes|no] ");
     $answer = trim(fgets(STDIN));
     if (strncasecmp($answer, 'y', 1)) {
-        Console::stdout(PHP_EOL . "  Quit initialization." . PHP_EOL);
+        printMessage(PHP_EOL . "  Quit initialization." . PHP_EOL);
         exit(0);
     }
 }
@@ -65,7 +67,7 @@ if (!is_dir($rootPath)) {
     exit(3);
 }
 
-Console::stdout(PHP_EOL . "  Start initialization ..." . PHP_EOL . PHP_EOL);
+printMessage(PHP_EOL . "  Start initialization ..." . PHP_EOL . PHP_EOL);
 
 $files = getFileList($rootPath);
 if (isset($env['skipFiles'])) {
@@ -97,7 +99,7 @@ foreach (array_column($envs, 'path') as $envPath) {
 }
 $filesToRemove = array_filter($filesToRemove, 'file_exists');
 if ($filesToRemove) {
-    Console::stdout(PHP_EOL . "  Remove files from other environments ..." . PHP_EOL . PHP_EOL);
+    printMessage(PHP_EOL . "  Remove files from other environments ..." . PHP_EOL . PHP_EOL);
 
     $all = false;
     foreach ($filesToRemove as $file) {
@@ -105,7 +107,7 @@ if ($filesToRemove) {
             break;
         }
     }
-    Console::stdout(PHP_EOL);
+    printMessage(PHP_EOL);
 }
 
 $callbacks = ['setCookieValidationKey', 'setWritable', 'setExecutable', 'createSymlink'];
@@ -115,7 +117,7 @@ foreach ($callbacks as $callback) {
     }
 }
 
-Console::stdout(PHP_EOL . "  ... initialization completed." . PHP_EOL . PHP_EOL);
+printMessage(PHP_EOL . "  ... initialization completed." . PHP_EOL . PHP_EOL);
 
 function getFileList($root, $basePath = ''): array
 {
@@ -137,22 +139,25 @@ function getFileList($root, $basePath = ''): array
     return $files;
 }
 
+/**
+ * @throws \yii\base\Exception
+ */
 function copyFile($root, $source, $target, &$all, $params): bool
 {
     if (!is_file($root . '/' . $source)) {
-        Console::stdout("       skip $target ($source not exist)" . PHP_EOL);
+        printMessage("       skip $target ($source not exist)" . PHP_EOL);
         return true;
     }
     if (is_file($root . '/' . $target)) {
         if (file_get_contents($root . '/' . $source) === file_get_contents($root . '/' . $target)) {
-            Console::stdout("  unchanged $target" . PHP_EOL);
+            printMessage("  unchanged $target" . PHP_EOL);
             return true;
         }
         if ($all) {
-            Console::stdout("  overwrite $target" . PHP_EOL);
+            printMessage("  overwrite $target" . PHP_EOL);
         } else {
-            Console::stdout("      exist $target" . PHP_EOL);
-            Console::stdout("            ...overwrite? [Yes|No|All|Quit] ");
+            printMessage("      exist $target" . PHP_EOL);
+            printMessage("            ...overwrite? [Yes|No|All|Quit] ");
 
 
             $answer = !empty($params['overwrite']) ? $params['overwrite'] : trim(fgets(STDIN));
@@ -160,13 +165,13 @@ function copyFile($root, $source, $target, &$all, $params): bool
                 return false;
             } else {
                 if (!strncasecmp($answer, 'y', 1)) {
-                    Console::stdout("  overwrite $target" . PHP_EOL);
+                    printMessage("  overwrite $target" . PHP_EOL);
                 } else {
                     if (!strncasecmp($answer, 'a', 1)) {
-                        Console::stdout("  overwrite $target" . PHP_EOL);
+                        printMessage("  overwrite $target" . PHP_EOL);
                         $all = true;
                     } else {
-                        Console::stdout("       skip $target" . PHP_EOL);
+                        printMessage("       skip $target" . PHP_EOL);
                         return true;
                     }
                 }
@@ -175,8 +180,8 @@ function copyFile($root, $source, $target, &$all, $params): bool
         file_put_contents($root . '/' . $target, file_get_contents($root . '/' . $source));
         return true;
     }
-    Console::stdout("   generate $target" . PHP_EOL);
-    @mkdir(dirname($root . '/' . $target), 0777, true);
+    printMessage("   generate $target" . PHP_EOL);
+    FileHelper::createDirectory($root . '/' . $target, 0777, true);
     file_put_contents($root . '/' . $target, file_get_contents($root . '/' . $source));
     return true;
 }
@@ -185,23 +190,23 @@ function removeFile($root, $target, &$all, $params): bool
 {
     if (is_file($root . '/' . $target)) {
         if ($all) {
-            Console::stdout("  delete $target" . PHP_EOL);
+            printMessage("  delete $target" . PHP_EOL);
         } else {
-            Console::stdout("      delete $target" . PHP_EOL);
-            Console::stdout("            ...confirm? [Yes|No|All|Quit]");
+            printMessage("      delete $target" . PHP_EOL);
+            printMessage("            ...confirm? [Yes|No|All|Quit]");
 
             $answer = !empty($params['delete']) ? $params['delete'] : trim(fgets(STDIN));
             if (!strncasecmp($answer, 'q', 1)) {
                 return false;
             } else {
                 if (!strncasecmp($answer, 'y', 1)) {
-                    Console::stdout("  delete $target" . PHP_EOL);
+                    printMessage("  delete $target" . PHP_EOL);
                 } else {
                     if (!strncasecmp($answer, 'a', 1)) {
-                        Console::stdout("  delete $target" . PHP_EOL);
+                        printMessage("  delete $target" . PHP_EOL);
                         $all = true;
                     } else {
-                        Console::stdout("       skip $target" . PHP_EOL);
+                        printMessage("       skip $target" . PHP_EOL);
                         return true;
                     }
                 }
@@ -238,7 +243,7 @@ function setWritable($root, $paths): void
     foreach ($paths as $writable) {
         if (is_dir("$root/$writable")) {
             if (@chmod("$root/$writable", 0777)) {
-                Console::stdout("      chmod 0777 $writable" . PHP_EOL);
+                printMessage("      chmod 0777 $writable" . PHP_EOL);
             } else {
                 printError("Operation chmod not permitted for directory $writable.");
             }
@@ -253,7 +258,7 @@ function setExecutable($root, $paths): void
     foreach ($paths as $executable) {
         if (file_exists("$root/$executable")) {
             if (@chmod("$root/$executable", 0755)) {
-                Console::stdout("      chmod 0755 $executable" . PHP_EOL);
+                printMessage("      chmod 0755 $executable" . PHP_EOL);
             } else {
                 printError("Operation chmod not permitted for $executable.");
             }
@@ -266,7 +271,7 @@ function setExecutable($root, $paths): void
 function setCookieValidationKey($root, $paths): void
 {
     foreach ($paths as $file) {
-        Console::stdout( "   generate cookie validation key in $file" . PHP_EOL);
+        printMessage("   generate cookie validation key in $file" . PHP_EOL);
         $file = $root . '/' . $file;
         $length = 32;
         $bytes = openssl_random_pseudo_bytes($length);
@@ -283,13 +288,16 @@ function createSymlink($root, $links): void
 {
     foreach ($links as $link => $target) {
         //first removing folders to avoid errors if the folder already exists
-        @rmdir($root . "/" . $link);
+        try {
+            FileHelper::removeDirectory($root . "/" . $link);
+        } catch (Exception) {
+        }
         //next removing existing symlink in order to update the target
         if (is_link($root . "/" . $link)) {
-            @unlink($root . "/" . $link);
+            FileHelper::unlink($root . "/" . $link);
         }
         if (@symlink($root . "/" . $target, $root . "/" . $link)) {
-            Console::stdout("      symlink $root/$target $root/$link" . PHP_EOL);
+            printMessage("      symlink $root/$target $root/$link" . PHP_EOL);
         } else {
             printError("Cannot create symlink $root/$target $root/$link.");
         }
@@ -298,11 +306,15 @@ function createSymlink($root, $links): void
 
 /**
  * Prints error message.
- * @param string $message message
  */
 function printError(string $message): void
 {
-    Console::stdout(PHP_EOL . formatMessage("Error. $message", ['fg-red']) . PHP_EOL);
+    Console::error(PHP_EOL . 'Error. ' . $message . PHP_EOL);
+}
+
+function printMessage(string $message): void
+{
+    Console::stdout($message);
 }
 
 /**
@@ -313,7 +325,7 @@ function printError(string $message): void
  *
  * @return boolean true if the stream supports ANSI colors, otherwise false.
  */
-function ansiColorsSupported()
+function ansiColorsSupported(): bool
 {
     return DIRECTORY_SEPARATOR === '\\'
         ? getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON'
@@ -325,7 +337,7 @@ function ansiColorsSupported()
  * @param string $name style name
  * @return integer ANSI code of style.
  */
-function getStyleCode($name)
+function getStyleCode(string $name): int
 {
     $styles = [
         'bold' => 1,
@@ -355,7 +367,7 @@ function getStyleCode($name)
  * @param string[] $styles styles
  * @return string formatted message.
  */
-function formatMessage($message, $styles)
+function formatMessage(string $message, array $styles): string
 {
     if (empty($styles) || !ansiColorsSupported()) {
         return $message;
