@@ -4,94 +4,51 @@ declare(strict_types=1);
 
 namespace app\models;
 
-use yii\base\BaseObject;
+use app\components\db\ActiveRecord;
+use app\components\traits\IdentityTrait;
+use app\enums\Tables;
+use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
-class Identity extends BaseObject implements IdentityInterface
+/**
+ * @property string $id
+ * @property string $username
+ * @property string $email
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ * @property-read Identity[]|array $identityTokens
+ */
+class Identity extends ActiveRecord implements IdentityInterface
 {
-    public int|string $id = '';
-    public string $username = '';
-    public string $passwordHash = '';
-    public string $authKey = '';
-    public string $accessToken = '';
-    private static array $_users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            // password: admin
-            'passwordHash' => '$2y$13$gYAywKSkhfZDq9FLNdm7buKnvlRxDexf5xipSMAxQPDUxpaptmZJu',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            // password: demo
-            'passwordHash' => '$2y$13$alRLq1PGVMlGYwS/Y3iy3ewQns1Z8ol8Iq6Zb5k7ZwEhblA1aL29y',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentity($id): static|null
+    use IdentityTrait;
+
+    public bool $useUuidInsteadInt = true;
+    public string|false $createdAtAttribute = 'created_at';
+    public string|false $updatedAtAttribute = 'updated_at';
+
+
+    public static function tableName(): string
     {
-        return isset(self::$_users[$id]) ? new static(self::$_users[$id]) : null;
+        return Tables::Identity->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentityByAccessToken($token, $type = null): static|null
+    public function behaviors(): array
     {
-        foreach (self::$_users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return ArrayHelper::merge(parent::behaviors(), []);
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername(string $username): static|null
+    public function rules(): array
     {
-        foreach (self::$_users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return ArrayHelper::merge(parent::rules(), []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId(): int|string
+    public function getIdentityTokens(): ActiveQuery
     {
-        return $this->id;
+        return $this->hasMany(IdentityToken::class, ['identity_id' => 'id']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey(): string|null
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey): bool
-    {
-        return $this->authKey === $authKey;
-    }
 }

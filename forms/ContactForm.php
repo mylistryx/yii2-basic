@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\models;
+namespace app\forms;
 
 use yii\base\Model;
 use yii\mail\MailerInterface;
@@ -23,11 +23,8 @@ class ContactForm extends Model
     public function rules(): array
     {
         return [
-            // name, email, subject and body are required
             [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
             ['email', 'email'],
-            // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
         ];
     }

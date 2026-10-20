@@ -12,10 +12,10 @@ class m261020_212340_create_identity_table extends Migration
     {
         $this->createTable(Tables::Identity->value, [
             'id' => $this->uuidPK(),
-            'username' => $this->string(64)->notNull()->unique(),
-            'email' => $this->string(64)->notNull()->unique(),
-            'password_hash' => $this->string(64)->notNull(),
-            'auth_key' => $this->string(64)->notNull(),
+            'username' => $this->string()->notNull()->unique(),
+            'email' => $this->string()->notNull()->unique(),
+            'password_hash' => $this->string()->notNull(),
+            'auth_key' => $this->string()->notNull(),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->notNull(),
         ]);

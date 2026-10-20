@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\tests\Unit\Models;
 
-use app\models\LoginForm;
+use app\forms\LoginForm;
 use Yii;
 use yii\base\Security;
 
@@ -33,7 +33,7 @@ final class LoginFormTest extends \Codeception\Test\Unit
 
     public function testLoginWrongPassword()
     {
-        $this->_model = new LoginForm(
+        $this->_model = new \app\forms\LoginForm(
             new Security(),
             [
                 'username' => 'demo',
