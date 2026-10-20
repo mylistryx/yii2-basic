@@ -1,0 +1,94 @@
+{
+    "name": "mylistryx/yii2-basic",
+    "description": "Yii 2 torrent parser",
+    "keywords": [
+        "yii2",
+        "framework",
+        "basic",
+        "project template",
+        "torrent",
+        "parser"
+    ],
+    "homepage": "https://net23.ru/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.5",
+        "yiisoft/yii2": "~2.0.55",
+        "yiisoft/yii2-bootstrap5": "~2.0.51",
+        "yiisoft/yii2-symfonymailer": "~2.0.4",
+        "yiisoft/yii2-imagine": "~2.3.1",
+        "yiisoft/yii2-queue": "~2.3.8",
+        "yiisoft/yii2-redis": "~2.1.2",
+        "ramsey/uuid": "~4.9",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "ext-redis": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "larapack/dd": "~1.1",
+        "codeception/c3": "~2.9.0",
+        "codeception/codeception": "~5.3.7",
+        "codeception/lib-innerbrowser": "~4.1.1",
+        "codeception/module-asserts": "~3.3.0",
+        "codeception/module-filesystem": "~3.0.2",
+        "codeception/module-phpbrowser": "~3.0.2",
+        "codeception/module-yii2": "~1.1.2",
+        "codeception/verify": "~3.4.0",
+        "phpstan/phpstan": "~2.3.1",
+        "symfony/process": "~6.4.48",
+        "yiisoft/yii2-coding-standards": "~3.0.2",
+        "yiisoft/yii2-debug": "~2.1.28",
+        "yiisoft/yii2-faker": "~2.0.5",
+        "yiisoft/yii2-gii": "~2.2.7"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "codeception/c3": true
+        },
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "scripts": {
+        "cs": "./vendor/bin/phpcs",
+        "cs-fix": "./vendor/bin/phpcbf",
+        "post-install-cmd": [
+            "yii\\composer\\Installer::postInstall"
+        ],
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject",
+            "yii\\composer\\Installer::postInstall"
+        ],
+        "static": "./vendor/bin/phpstan --memory-limit=-1",
+        "tests": "./vendor/bin/codecept run --env php-builtin"
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777",
+                    "yii": "0755"
+                }
+            ]
+        },
+        "yii\\composer\\Installer::postInstall": {
+            "generateCookieValidationKey": [
+                "config/web.php"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
