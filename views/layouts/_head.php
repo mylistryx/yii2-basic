@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
-/** @var yii\web\View $this */
-
 use app\assets\AppAsset;
+use yii\web\View;
+
+/**
+ * @var View $this
+ */
+
 
 AppAsset::register($this);
 

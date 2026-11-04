@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-/** @var yii\web\View $this */
-/** @var string $content */
-
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\helpers\Html;
+use yii\web\View;
+
+/**
+ * @var View $this
+ * @var string $content
+ */
+
 
 $this->render('_head');
 ?>

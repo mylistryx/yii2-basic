@@ -22,14 +22,12 @@ class LoginForm extends Model
     private Identity|null $_user = null;
     private bool $_userLoaded = false;
 
-    public function __construct(private readonly Security $security, $config = [])
+    public function __construct(
+        private readonly Security $security, $config = [])
     {
         parent::__construct($config);
     }
 
-    /**
-     * @return array the validation rules.
-     */
     public function rules(): array
     {
         return [
@@ -39,13 +37,6 @@ class LoginForm extends Model
         ];
     }
 
-    /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array|null $params the additional name-value pairs given in the rule
-     */
     public function validatePassword(string $attribute, array|null $params): void
     {
         if (!$this->hasErrors()) {

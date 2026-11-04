@@ -36,6 +36,10 @@ class Identity extends ActiveRecord implements IdentityInterface
         return Tables::Identity->value;
     }
 
+    public static function findByUsername(string $username)
+    {
+    }
+
     public function behaviors(): array
     {
         return ArrayHelper::merge(parent::behaviors(), []);

@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-/** @var yii\web\View $this */
-
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use yii\helpers\Html;
+use yii\web\View;
+
+/**
+ * @var View $this
+ */
+
 
 $items = [
     [
@@ -23,12 +27,12 @@ $items = [
     ],
     [
         'label' => 'Login',
-        'url' => ['/site/login'],
+        'url' => ['/auth/login'],
         'visible' => Yii::$app->user->isGuest,
     ],
     [
         'label' => 'Logout (' . Html::encode(Yii::$app->user->identity?->username ?? '') . ')',
-        'url' => ['/site/logout'],
+        'url' => ['/auth/logout'],
         'linkOptions' => [
             'data-method' => 'post',
             'class' => 'nav-link logout',
@@ -43,7 +47,7 @@ $items = [
         [
             'brandLabel' => Yii::$app->name,
             'brandUrl' => Yii::$app->homeUrl,
-            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top'],
         ],
     ) ?>
     <?= Nav::widget(
