@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\components\controllers\WebController;
+use app\exceptions\AuthFailtureException;
 use app\forms\LoginForm;
+use app\models\AuthLog;
 use Yii;
 use yii\base\Security;
 use yii\filters\AccessControl;
@@ -17,8 +19,7 @@ final class AuthController extends WebController
         $module,
         private readonly Security $security,
         $config = [],
-    )
-    {
+    ) {
         parent::__construct($id, $module, $config);
     }
 
@@ -30,17 +31,17 @@ final class AuthController extends WebController
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'only'  => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::class,
+            'verbs'  => [
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -61,8 +62,15 @@ final class AuthController extends WebController
 
         $model = new LoginForm($this->security);
 
-        if ($model->load($this->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load($this->request->post())) {
+            try {
+                $model->login();
+                AuthLog::logSuccess($model->email);
+                return $this->error('Invalid credentials', $model->t)->goBack();
+            } catch (AuthFailtureException $e) {
+                AuthLog::logFailure($model->email, $e);
+            }
+
         }
 
         $model->password = '';

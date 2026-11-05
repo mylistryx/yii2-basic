@@ -3,7 +3,7 @@
 use app\components\migrations\Migration;
 use app\enums\Tables;
 
-class m250208_115000_create_table_regions extends Migration
+class m250208_115000_create_regions_table extends Migration
 {
     public function safeUp(): void
     {

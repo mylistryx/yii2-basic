@@ -40,6 +40,16 @@ class IdentityToken extends ActiveRecord
         return ArrayHelper::merge(parent::rules(), []);
     }
 
+    public function relations(): array
+    {
+        return ArrayHelper::merge(parent::relations(), []);
+    }
+
+    public function attributeLabels(): array
+    {
+        return ArrayHelper::merge(parent::attributeLabels(), []);
+    }
+
     public function getIdentity(): ActiveQuery
     {
         return $this->hasOne(Identity::class, ['id' => 'identity_id']);

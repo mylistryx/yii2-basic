@@ -13,7 +13,6 @@ use yii\web\IdentityInterface;
 
 /**
  * @property string $id
- * @property string $username
  * @property string $email
  * @property string $password_hash
  * @property string $auth_key
@@ -48,6 +47,19 @@ class Identity extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return ArrayHelper::merge(parent::rules(), []);
+    }
+
+    public function attributeLabels(): array
+    {
+        return ArrayHelper::merge(parent::attributeLabels(), []);
+    }
+
+    public function relations(): array
+    {
+        return ArrayHelper::merge(parent::relations(), [
+            'identityTokens' => [IdentityToken::class],
+            'trackers' => [Tracker::class],
+        ]);
     }
 
     public function getIdentityTokens(): ActiveQuery

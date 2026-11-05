@@ -6,6 +6,9 @@ use ReflectionClass;
 use Yii;
 use yii\base\Model;
 
+/**
+ * @var string $tCategory
+ */
 abstract class Form extends Model
 {
     public static function getTCategory(): string

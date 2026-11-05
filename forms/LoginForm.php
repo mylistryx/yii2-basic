@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace app\forms;
 
+use app\components\forms\Form;
 use app\models\Identity;
 use Yii;
-use yii\base\Model;
 use yii\base\Security;
 
 /**
@@ -14,13 +14,13 @@ use yii\base\Security;
  *
  * @property-read Identity|null $user
  */
-class LoginForm extends Model
+class LoginForm extends Form
 {
-    public string $username = '';
+    public string $email = '';
     public string $password = '';
     public bool $rememberMe = true;
-    private Identity|null $_user = null;
-    private bool $_userLoaded = false;
+    private Identity|null $_identity = null;
+    private bool $_identityLoaded = false;
 
     public function __construct(
         private readonly Security $security, $config = [])
@@ -40,10 +40,10 @@ class LoginForm extends Model
     public function validatePassword(string $attribute, array|null $params): void
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
+            $identity = $this->getIdentity();
 
-            if (!$user || !$this->security->validatePassword($this->password, $user->passwordHash)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if (!$identity || !$this->security->validatePassword($this->password, $identity->passwordHash)) {
+                $this->addError($attribute, 'Incorrect credentials');
             }
         }
     }
@@ -55,7 +55,7 @@ class LoginForm extends Model
     public function login(): bool
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return Yii::$app->user->login($this->getIdentity(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
 
         return false;
@@ -66,13 +66,13 @@ class LoginForm extends Model
      *
      * @return Identity|null
      */
-    public function getUser(): Identity|null
+    public function getIdentity(): Identity|null
     {
-        if (!$this->_userLoaded) {
-            $this->_user = Identity::findByUsername($this->username);
-            $this->_userLoaded = true;
+        if (!$this->_identityLoaded) {
+            $this->_identity = Identity::findByUsername($this->username);
+            $this->_identityLoaded = true;
         }
 
-        return $this->_user;
+        return $this->_identity;
     }
 }
