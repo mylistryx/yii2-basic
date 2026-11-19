@@ -27,7 +27,8 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-redis": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "iguazoft/yii2-ui": "^1.1"
     },
     "require-dev": {
         "larapack/dd": "~1.1",

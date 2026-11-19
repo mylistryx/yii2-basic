@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8527d99dd20d923a302a4c732d012e06",
+    "content-hash": "4b3b2f0edfe46b9b6cbdf4a92a02f3d2",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -412,6 +412,82 @@
             },
             "time": "2026-09-15T15:42:51+00:00",
             "published-time": "2026-09-15T15:42:56+00:00"
+        },
+        {
+            "name": "iguazoft/yii2-ui",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dannyrios81/yii2-ui.git",
+                "reference": "508ae5fb5595a3cede3d5e33f966a616b2703208"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dannyrios81/yii2-ui/zipball/508ae5fb5595a3cede3d5e33f966a616b2703208",
+                "reference": "508ae5fb5595a3cede3d5e33f966a616b2703208",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0",
+                "yiisoft/yii2": "~2.0.0",
+                "yiisoft/yii2-bootstrap5": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "iguazoft\\ui\\Bootstrap",
+                "branch-alias": {
+                    "dev-main": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "iguazoft\\ui\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Iguazoft",
+                    "email": "info@iguazoft.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "39 Bootstrap 5 widgets to build admin dashboards in Yii2 from pure PHP: layout, sidebar, metric cards, charts, tables, forms, modals and more.",
+            "homepage": "https://github.com/dannyrios81/yii2-ui",
+            "keywords": [
+                "Forms",
+                "admin",
+                "admin-dashboard",
+                "admin-panel",
+                "atomic-design",
+                "backend",
+                "bootstrap",
+                "bootstrap5",
+                "chartjs",
+                "charts",
+                "components",
+                "dashboard",
+                "design-system",
+                "tables",
+                "ui",
+                "widgets",
+                "yii2",
+                "yii2-extension",
+                "yii2-widgets"
+            ],
+            "support": {
+                "docs": "https://github.com/dannyrios81/yii2-ui/blob/main/README.md",
+                "issues": "https://github.com/dannyrios81/yii2-ui/issues",
+                "source": "https://github.com/dannyrios81/yii2-ui"
+            },
+            "time": "2026-11-16T01:40:55+00:00",
+            "published-time": "2026-11-16T20:09:15+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -4354,16 +4430,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.4.7",
+            "version": "13.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e6458d44279e3b4fc492d4c41fe8e677efed7a2c"
+                "reference": "291e66a76eb39f2fb8f880d38edc30dbd7acd9a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e6458d44279e3b4fc492d4c41fe8e677efed7a2c",
-                "reference": "e6458d44279e3b4fc492d4c41fe8e677efed7a2c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/291e66a76eb39f2fb8f880d38edc30dbd7acd9a2",
+                "reference": "291e66a76eb39f2fb8f880d38edc30dbd7acd9a2",
                 "shasum": ""
             },
             "require": {
@@ -4434,7 +4510,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.4.7"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.4.8"
             },
             "funding": [
                 {
@@ -4442,8 +4518,8 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-11-13T11:10:10+00:00",
-            "published-time": "2026-11-13T11:11:23+00:00"
+            "time": "2026-11-19T12:17:15+00:00",
+            "published-time": "2026-11-19T12:18:28+00:00"
         },
         {
             "name": "psr/http-client",
