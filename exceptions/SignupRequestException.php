@@ -4,4 +4,6 @@ namespace app\exceptions;
 
 use Exception;
 
-class SignupRequestException extends Exception {}
+class SignupRequestException extends Exception
+{
+}

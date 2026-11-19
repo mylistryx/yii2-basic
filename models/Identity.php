@@ -4,67 +4,85 @@ declare(strict_types=1);
 
 namespace app\models;
 
-use app\components\db\ActiveRecord;
-use app\components\traits\IdentityTrait;
-use app\enums\Tables;
-use yii\db\ActiveQuery;
-use yii\helpers\ArrayHelper;
+use yii\base\BaseObject;
 use yii\web\IdentityInterface;
 
-/**
- * @property string $id
- * @property string $email
- * @property string $password_hash
- * @property string $auth_key
- * @property string $created_at
- * @property string $updated_at
- *
- * @property-read Identity[]|array $identityTokens
- */
-class Identity extends ActiveRecord implements IdentityInterface
+class Identity extends BaseObject implements IdentityInterface
 {
-    use IdentityTrait;
+    public int|string $id = '';
+    public string $username = '';
+    public string $passwordHash = '';
+    public string $authKey = '' {
+        get {
+            return $this->authKey;
+        }
+    }
+    public string $accessToken = '';
+    private static array $_users = [
+        '100' => [
+            'id'           => '100',
+            'username'     => 'admin',
+            // password: admin
+            'passwordHash' => '$2y$13$gYAywKSkhfZDq9FLNdm7buKnvlRxDexf5xipSMAxQPDUxpaptmZJu',
+            'authKey'      => 'test100key',
+            'accessToken'  => '100-token',
+        ],
+        '101' => [
+            'id'           => '101',
+            'username'     => 'demo',
+            // password: demo
+            'passwordHash' => '$2y$13$alRLq1PGVMlGYwS/Y3iy3ewQns1Z8ol8Iq6Zb5k7ZwEhblA1aL29y',
+            'authKey'      => 'test101key',
+            'accessToken'  => '101-token',
+        ],
+    ];
 
-    public bool $useUuidInsteadInt = true;
-    public string|false $createdAtAttribute = 'created_at';
-    public string|false $updatedAtAttribute = 'updated_at';
-
-
-    public static function tableName(): string
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id): static|null
     {
-        return Tables::Identity->value;
+        return isset(self::$_users[$id]) ? new static(self::$_users[$id]) : null;
     }
 
-    public static function findByUsername(string $username)
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null): static|null
     {
+        foreach (self::$_users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 
-    public function behaviors(): array
+    public static function findByUsername(string $username): static|null
     {
-        return ArrayHelper::merge(parent::behaviors(), []);
+        foreach (self::$_users as $user) {
+            if (strcasecmp($user['username'], $username) === 0) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 
-    public function rules(): array
+    /**
+     * {@inheritdoc}
+     */
+    public function getId(): int|string
     {
-        return ArrayHelper::merge(parent::rules(), []);
+        return $this->id;
     }
 
-    public function attributeLabels(): array
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey): bool
     {
-        return ArrayHelper::merge(parent::attributeLabels(), []);
+        return $this->authKey === $authKey;
     }
-
-    public function relations(): array
-    {
-        return ArrayHelper::merge(parent::relations(), [
-            'identityTokens' => [IdentityToken::class],
-            'trackers' => [Tracker::class],
-        ]);
-    }
-
-    public function getIdentityTokens(): ActiveQuery
-    {
-        return $this->hasMany(IdentityToken::class, ['identity_id' => 'id']);
-    }
-
 }

@@ -62,21 +62,13 @@ final class AuthController extends WebController
 
         $model = new LoginForm($this->security);
 
-        if ($model->load($this->request->post())) {
-            try {
-                $model->login();
-                AuthLog::logSuccess($model->email);
-                return $this->error('Invalid credentials', $model->t)->goBack();
-            } catch (AuthFailtureException $e) {
-                AuthLog::logFailure($model->email, $e);
-            }
-
+        if ($model->load($this->request->post()) && $model->login()) {
+            return $this->goBack();
         }
 
         $model->password = '';
 
-        return $this->render('login', [
-            'model' => $model]);
+        return $this->render('login', ['model' => $model]);
     }
 
     /**

@@ -9,25 +9,22 @@ use app\models\Identity;
 use Yii;
 use yii\base\Security;
 
-/**
- * LoginForm is the model behind the login form.
- *
- * @property-read Identity|null $user
- */
 class LoginForm extends Form
 {
-    public string $email = '';
+    public string $username = '';
     public string $password = '';
     public bool $rememberMe = true;
     private Identity|null $_identity = null;
     private bool $_identityLoaded = false;
 
-    public function __construct(
-        private readonly Security $security, $config = [])
+    public function __construct(private readonly Security $security, $config = [])
     {
         parent::__construct($config);
     }
 
+    /**
+     * @return array the validation rules.
+     */
     public function rules(): array
     {
         return [
@@ -37,13 +34,20 @@ class LoginForm extends Form
         ];
     }
 
+    /**
+     * Validates the password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
     public function validatePassword(string $attribute, array|null $params): void
     {
         if (!$this->hasErrors()) {
-            $identity = $this->getIdentity();
+            $user = $this->getIdentity();
 
-            if (!$identity || !$this->security->validatePassword($this->password, $identity->passwordHash)) {
-                $this->addError($attribute, 'Incorrect credentials');
+            if (!$user || !$this->security->validatePassword($this->password, $user->passwordHash)) {
+                $this->addError($attribute, 'Incorrect username or password.');
             }
         }
     }
@@ -62,8 +66,6 @@ class LoginForm extends Form
     }
 
     /**
-     * Finds user by [[username]]
-     *
      * @return Identity|null
      */
     public function getIdentity(): Identity|null

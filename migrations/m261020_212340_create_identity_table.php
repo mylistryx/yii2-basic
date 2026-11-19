@@ -12,7 +12,8 @@ class m261020_212340_create_identity_table extends Migration
     {
         $this->createTable(Tables::Identity->value, [
             'id'            => $this->uuidPK(),
-            'email'         => $this->string()->notNull()->unique(),
+            'email'         => $this->string()->null()->unique(),
+            'phone'         => $this->string()->null()->unique(),
             'password_hash' => $this->string()->notNull(),
             'auth_key'      => $this->string()->notNull()->unique(),
             'created_at'    => $this->dateTime()->notNull(),

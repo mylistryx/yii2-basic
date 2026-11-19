@@ -1,17 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
-use app\forms\LoginForm;
+/** @var yii\web\View $this */
+/** @var yii\bootstrap5\ActiveForm $form */
+/** @var \common\models\LoginForm $model */
+
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-use yii\web\View;
-
-/**
- * @var View $this
- * @var ActiveForm $form
- * @var LoginForm $model
- */
-
 
 $this->title = 'Login to your account';
 $this->params['breadcrumbs'][] = $this->title;
@@ -111,8 +107,9 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
                     <?php ActiveForm::end(); ?>
 
                     <div class="text-body-secondary text-center mt-3 small">
-                        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-                        To modify the username/password, check <code>app\models\User::$users</code>.
+                        <?= Html::a('Forgot your password?', ['site/request-password-reset']) ?>
+                        <span class="mx-1">&middot;</span>
+                        <?= Html::a('Resend verification email', ['site/resend-verification-email']) ?>
                     </div>
 
                 </div>
