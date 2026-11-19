@@ -1,5 +1,12 @@
 <?php
 
+use yii\helpers\ArrayHelper;
+
+$params = ArrayHelper::merge(
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php',
+);
+
 return [
     'id'         => 'app-web',
     'basePath'   => dirname(__DIR__),
@@ -16,4 +23,5 @@ return [
             'rules'           => require __DIR__ . '/routes.php',
         ],
     ],
+    'params'     => $params,
 ];

@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace app\tests\Unit;
 
-use app\controllers\SiteController;
+use app\controllers\AuthController;
 use app\models\Identity;
+use Codeception\Test\Unit;
 use Yii;
 use yii\base\Security;
 use yii\web\IdentityInterface;
 use yii\web\View;
 
-final class LogoutTest extends \Codeception\Test\Unit
+final class LogoutTest extends Unit
 {
     public function testRenderLogoutLinkWhenUserIsLoggedIn(): void
     {
         $user = Identity::findIdentity('100');
 
-        $controller = new SiteController(
-            'site',
+        $controller = new AuthController(
+            'auth',
             Yii::$app,
-            Yii::$app->mailer,
             new Security(),
         );
 

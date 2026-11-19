@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace app\tests\Unit;
 
-use app\controllers\SiteController;
+use app\controllers\AuthController;
 use app\models\Identity;
+use Codeception\Test\Unit;
 use Yii;
 use yii\base\Security;
 use yii\web\View;
 
-final class LoginTest extends \Codeception\Test\Unit
+final class LoginTest extends Unit
 {
     public function testRenderLoginWrongUsername(): void
     {
-        $controller = new SiteController(
-            'site',
+        $controller = new AuthController(
+            'auth',
             Yii::$app,
-            Yii::$app->mailer,
             new Security(),
         );
 

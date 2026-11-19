@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
-/** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
-/** @var \common\models\LoginForm $model */
+/**
+ * @var View $this
+ * @var ActiveForm $form
+ * @var LoginForm $model
+ */
 
+
+use app\forms\LoginForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
+use yii\web\View;
 
 $this->title = 'Login to your account';
 $this->params['breadcrumbs'][] = $this->title;

@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace app\tests\Functional;
 
+use app\models\Identity;
 use app\tests\Support\FunctionalTester;
 
 final class LoginFormCest
 {
-    public function _before(FunctionalTester $I)
+    public function _before(FunctionalTester $I): void
     {
-        $I->amOnRoute('site/login');
+        $I->amOnRoute('auth/login');
     }
 
-    public function openLoginPage(FunctionalTester $I)
+    public function openLoginPage(FunctionalTester $I): void
     {
         $I->see('Login', 'h1');
     }
 
     // demonstrates `amLoggedInAs` method
-    public function internalLoginById(FunctionalTester $I)
+    public function internalLoginById(FunctionalTester $I): void
     {
         $I->amLoggedInAs(100);
         $I->amOnPage('/');
@@ -27,14 +28,14 @@ final class LoginFormCest
     }
 
     // demonstrates `amLoggedInAs` method
-    public function internalLoginByInstance(FunctionalTester $I)
+    public function internalLoginByInstance(FunctionalTester $I): void
     {
-        $I->amLoggedInAs(\app\models\Identity::findByUsername('admin'));
+        $I->amLoggedInAs(Identity::findByUsername('admin'));
         $I->amOnPage('/');
         $I->see('Logout (admin)');
     }
 
-    public function loginWithEmptyCredentials(FunctionalTester $I)
+    public function loginWithEmptyCredentials(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', []);
         $I->expectTo('see validations errors');
@@ -42,7 +43,7 @@ final class LoginFormCest
         $I->see('Password cannot be blank.');
     }
 
-    public function loginWithWrongCredentials(FunctionalTester $I)
+    public function loginWithWrongCredentials(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', [
             'LoginForm[username]' => 'admin',
@@ -52,7 +53,7 @@ final class LoginFormCest
         $I->see('Incorrect username or password.');
     }
 
-    public function loginSuccessfully(FunctionalTester $I)
+    public function loginSuccessfully(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', [
             'LoginForm[username]' => 'admin',
