@@ -23,7 +23,7 @@ $items = [
     ],
     [
         'label' => 'Contact',
-        'url' => ['/site/contact'],
+        'url' => ['/contact/index'],
     ],
     [
         'label' => 'Login',

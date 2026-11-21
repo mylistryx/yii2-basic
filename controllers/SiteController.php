@@ -9,7 +9,7 @@ use yii\captcha\CaptchaAction;
 use yii\web\ErrorAction;
 use yii\web\Response;
 
-class SiteController extends WebController
+final class SiteController extends WebController
 {
     /**
      * {@inheritdoc}

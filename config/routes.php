@@ -1,2 +1,6 @@
 <?php
-return [];
+return [
+    ''         => '/site/index',
+    '/about'   => '/site/about',
+    '/contact' => '/contact/index',
+];

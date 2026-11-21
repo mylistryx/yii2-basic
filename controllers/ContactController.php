@@ -8,7 +8,7 @@ use yii\mail\MailerInterface;
 use yii\web\Controller;
 use yii\web\Response;
 
-class ContactController extends Controller
+final class ContactController extends Controller
 {
     public function __construct(
         $id,
