@@ -25,7 +25,6 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",
-        "ext-redis": "*",
         "ext-openssl": "*",
         "iguazoft/yii2-ui": "^1.1"
     },
