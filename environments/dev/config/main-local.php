@@ -2,8 +2,7 @@
 
 use yii\db\Connection as DbConnection;
 use yii\mail\MailerInterface;
-use yii\queue\redis\Queue;
-use yii\redis\Connection as RedisConnection;
+use yii\queue\file\Queue;
 
 return [
     'components' => [
@@ -18,11 +17,6 @@ return [
             'class'            => MailerInterface::class,
             'viewPath'         => '@app/mail',
             'useFileTransport' => true,
-        ],
-        'redis'  => [
-            'class'    => RedisConnection::class,
-            'port'     => 6379,
-            'database' => 0,
         ],
         'queue'  => [
             'class'   => Queue::class,

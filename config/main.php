@@ -1,8 +1,8 @@
 <?php
 
 use app\components\user\WebUser;
+use yii\caching\FileCache;
 use yii\log\FileTarget;
-use yii\redis\Cache;
 
 return [
     'language'   => 'ru',
@@ -13,7 +13,7 @@ return [
     'bootstrap'  => ['log'],
     'components' => [
         'cache' => [
-            'class' => Cache::class,
+            'class' => FileCache::class,
         ],
         'user'  => [
             'class' => WebUser::class,

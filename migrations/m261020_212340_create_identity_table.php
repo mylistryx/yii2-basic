@@ -16,6 +16,7 @@ class m261020_212340_create_identity_table extends Migration
             'phone'         => $this->string()->null()->unique(),
             'password_hash' => $this->string()->notNull(),
             'auth_key'      => $this->string()->notNull()->unique(),
+            'access_token'  => $this->string()->null()->unique(),
             'created_at'    => $this->dateTime()->notNull(),
             'updated_at'    => $this->dateTime()->notNull(),
         ]);
