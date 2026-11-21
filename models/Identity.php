@@ -12,11 +12,7 @@ class Identity extends BaseObject implements IdentityInterface
     public int|string $id = '';
     public string $username = '';
     public string $passwordHash = '';
-    public string $authKey = '' {
-        get {
-            return $this->authKey;
-        }
-    }
+    public string $authKey = '';
     public string $accessToken = '';
     private static array $_users = [
         '100' => [
@@ -76,6 +72,11 @@ class Identity extends BaseObject implements IdentityInterface
     public function getId(): int|string
     {
         return $this->id;
+    }
+
+    public function getAuthKey(): string
+    {
+        return $this->authKey;
     }
 
     /**
