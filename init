@@ -181,7 +181,7 @@ function copyFile($root, $source, $target, &$all, $params): bool
         return true;
     }
     printMessage("   generate $target" . PHP_EOL);
-    FileHelper::createDirectory($root . '/' . $target, 0777, true);
+//    FileHelper::createDirectory($root . '/' . $target, 0777, true);
     file_put_contents($root . '/' . $target, file_get_contents($root . '/' . $source));
     return true;
 }

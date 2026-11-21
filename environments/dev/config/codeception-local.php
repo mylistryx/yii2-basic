@@ -1,13 +1,15 @@
 <?php
 
-return yii\helpers\ArrayHelper::merge(
+use yii\helpers\ArrayHelper;
+
+return ArrayHelper::merge(
     require __DIR__ . '/main.php',
     require __DIR__ . '/main-local.php',
     require __DIR__ . '/test.php',
     require __DIR__ . '/test-local.php',
     [
         'components' => [
-            'request'      => [
+            'request' => [
                 'cookieValidationKey'  => 'test',
                 'enableCsrfValidation' => false,
             ],
