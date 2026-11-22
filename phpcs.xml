@@ -7,8 +7,9 @@
 
     <!-- directories to check -->
     <file>assets</file>
-    <file>commands</file>
+    <file>console</file>
     <file>controllers</file>
+    <file>forms</file>
     <file>mail</file>
     <file>models</file>
     <file>tests</file>

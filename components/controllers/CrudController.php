@@ -40,12 +40,15 @@ abstract class CrudController extends WebController
                 'class'      => ViewAction::class,
                 'modelClass' => $this->modelClass,
             ],
-            'toggle' => [
+        ];
+
+        if ($this->isActiveAttribute) {
+            $actions['toggle'] = [
                 'class'             => ToggleAction::class,
                 'modelClass'        => $this->modelClass,
                 'isActiveAttribute' => $this->isActiveAttribute,
-            ],
-        ];
+            ];
+        }
 
         foreach ($this->disabledActions as $action) {
             unset($actions[$action]);
