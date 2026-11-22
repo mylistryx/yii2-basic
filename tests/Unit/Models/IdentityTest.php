@@ -6,9 +6,9 @@ namespace app\tests\Unit\Models;
 
 use app\models\Identity;
 
-final class UserTest extends \Codeception\Test\Unit
+final class IdentityTest extends \Codeception\Test\Unit
 {
-    public function testFindUserById()
+    public function testFindIdentityById()
     {
         /** @var Identity $user */
         $user = Identity::findIdentity(100);
@@ -18,7 +18,7 @@ final class UserTest extends \Codeception\Test\Unit
         verify(Identity::findIdentity(999))->empty();
     }
 
-    public function testFindUserByAccessToken()
+    public function testFindIdentityByAccessToken()
     {
         /** @var Identity $user */
         $user = Identity::findIdentityByAccessToken('100-token');
@@ -28,7 +28,7 @@ final class UserTest extends \Codeception\Test\Unit
         verify(Identity::findIdentityByAccessToken('non-existing'))->empty();
     }
 
-    public function testFindUserByUsername()
+    public function testFindIdentityByUsername()
     {
         /** @var Identity $user */
         $user = Identity::findByUsername('admin');
@@ -38,9 +38,9 @@ final class UserTest extends \Codeception\Test\Unit
     }
 
     /**
-     * @depends testFindUserByUsername
+     * @depends testFindIdentityByUsername
      */
-    public function testValidateUser()
+    public function testValidateIdentity()
     {
         /** @var Identity $user */
         $user = Identity::findByUsername('admin');
